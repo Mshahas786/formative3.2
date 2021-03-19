@@ -2,36 +2,44 @@ import {Container, Form, Button} from 'react-bootstrap';
 
 function InputWork() {
   return (
-    <div className="">
-    <Container className="bg-light p-3 rounded rounded">
+    <div className="mt-5">
+    <Container className="align-middle">
     
 
-  <Form.Row >
-    <div class="col-md-5">
+  <Form className="col-md-5 float-right bg-warning rounded ">
+
+    <div className="mt-2">
     <Form.Label>Project Name</Form.Label>
-    <Form.Control type="text" placeholder="Project name" />
+    <Form.Control type="text" name="ProjectName" placeholder="Project name" />
     </div>
-    <div class="col-md-6">
-    <Form.Label>Project Name</Form.Label>
-    <Form.Control type="text" placeholder="Project name" />
+    <div className="mt-2">
+    <Form.Label>Project Cover Image</Form.Label>
+    <Form.Control type="url" name="ProjectCoverUrl" placeholder="project Cover image url" />
     </div>
 
     {/* <Form.Text className="text-muted">
     </Form.Text> */}
 
-<div class="col-md-6">
-    <Form.Label>Project Name</Form.Label>
-    <Form.Control type="text" placeholder="Project name" />
+    <div className="mt-2">
+    <Form.Label>Author</Form.Label>
+    <Form.Control type="text" name="AuthorName" placeholder="Author Name" />
+    </div>
+
+    <div className="mt-2">
+    <Form.Label>Project link</Form.Label>
+    <Form.Control type="link" name="ProjectLink" placeholder="Project link" />
     </div>
 
 
-    
+<div className="float-right">
+   <Button className="btn btn-success my-2">Post</Button>
+    </div>    
 
-  </Form.Row>
+  </Form>
 
-  <Button className="float-right btn-success" type="submit">
+  {/* <Button className="float-right btn-success" type="submit">
     POST
-    </Button> 
+    </Button>  */}
 
     </Container>
     </div>

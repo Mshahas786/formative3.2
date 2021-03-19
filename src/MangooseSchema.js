@@ -2,19 +2,19 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const postSchema = new Schema({
-    title:{
+    ProjectName:{
         type:String,
         require:true
     },
-    content:{
+    ProjectCoverUrl:{
         type:String,
          require:true
     },
-    author:{
+    AuthorName:{
         type:String,
         require:true
     },
-    image:{
+    ProjectLink:{
         type:String,
         require:true
     }
