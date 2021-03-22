@@ -5,16 +5,15 @@ const twig = require('twig');
 
 
 const app = express();
-const passport =  require("passport");
-
+// const passport =  require("passport");
 
 // we're calling in the mongoose schema user
-const User = require("./models/user");
+const Posts = require("./MangooseSchema");
 
 ////////we're setting up the strategy to provide security
 
 // const LocalStrategy =  require("passport-local");
-// passport.serializeUser(User.serializeUser());
+// passport.serializeUser(User.serializeUser()); 
 // passport.deserializeUser(User.deserializeUser()); 
 // passport.use(new LocalStrategy(User.authenticate()));
 
@@ -29,7 +28,7 @@ app.set('view engine', 'html');
 app.engine('html', twig.__express);
 app.set('views','views');
 
-const mongourl ="mongodb+srv://test:123@cluster01.zv9fx.mongodb.net/works?retryWrites=true&w=majority";
+const mongourl ="mongodb+srv://test:123@cluster01.zv9fx.mongodb.net/20WDWU07.WORKS?retryWrites=true&w=majority";
 
 mongoose.connect(mongourl, { useUnifiedTopology: true });
 app.use(require("express-session")({
@@ -40,8 +39,9 @@ app.use(require("express-session")({
 
 // add the bodyParser so we can return our information to the database
 app.use(bodyParser.urlencoded({ extended:true }))
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
+app.use(express.static(__dirname + '/public'));
 
 ///// start our server
 
@@ -72,19 +72,93 @@ app.use(passport.session());
 //     res.render("dashboard")
 // })
 
-app.post("/",(req,res)=>{ 
-    User.register(new User({            //passport-local-mongoose function to register a new user
-    	username: req.body.username,
-    	phone:req.body.phone,
-    	}),
-    	req.body.password,function(err,user){
-        if(err){
-            console.log(err);
-        }
-        passport.authenticate("local")(req,res,function(){ // authenticate the local session and redirect to login page
-            console.log(req);
-            res.redirect("/login");
-        })    
-    })
-
+app.post('/', (req, res) => {
+    new Posts({
+        ProjectName:req.InputWork.ProjectName,
+        ProjectCoverUrl:req.InputWork.ProjectCoverUrl,
+        AuthorName:req.InputWork.AuthorName,
+        ProjectLink:req.InputWork.ProjectLink
+           
+        })
+        .save()
+        .then(result => {
+            console.log(result);
+            res.redirect('/');
+        })
+        .catch(err => {
+            if (err) throw err;
+        });
 });
+
+app.get('/', (req, res) => {
+    // Fetch the posts from the database
+    Posts.find()
+        .sort({
+            createdAt: 'descending'
+        })
+        .then(result => {
+            if (result) {
+                res.render('InputWork', {
+                    allpost: result
+                });
+            }
+        })
+        .catch(err => {
+            if (err) throw err;
+        });
+});
+
+// // delete function
+// app.get('/delete/:id', (req, res) => {
+//     Posts.findByIdAndDelete(req.params.id)
+//     .then(result => {
+//         res.redirect('/');
+        
+//     })
+//     .catch(err => {
+//         console.log(err);
+//         res.redirect('/');
+//     })
+// });
+
+// // EDIT POST
+// app.get('/edit/:id', (req, res) => {
+
+//     Posts.findById(req.params.id)
+//     .then(result => {
+//         if(result){
+//             res.render('edit',{
+//                 post:result
+//             });
+//         }
+//         else{
+//             res.redirect('/');
+//         }
+//     })
+//     .catch(err => {
+//         res.redirect('/');
+//     });
+// });
+
+// // UPDATE POST
+// app.post('/edit/:id', (req, res) => {
+//     Posts.findById(req.params.id)
+//     .then(result => {
+//         if(result){
+//             result.title = req.body.title;
+//             result.content = req.body.content;
+//             result.author_name = req.body.author;
+//             return result.save();
+//         }
+//         else{
+//             console.log(err);
+//             res.redirect('/');
+//         }
+//     })
+//     .then(update => {
+//         res.redirect('/');
+//     })
+//     .catch(err => {
+//         res.redirect('/');
+//     });
+// });

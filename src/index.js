@@ -6,13 +6,14 @@ import WorkContainer from './WorkContainer';
 import InputWork from './InputWork';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Database from "Database";
 
 ReactDOM.render(
   <React.StrictMode>
     <App />
     <InputWork />
     <WorkContainer />
-    
+    <Database />
   </React.StrictMode>,
   document.getElementById('root')
 );
